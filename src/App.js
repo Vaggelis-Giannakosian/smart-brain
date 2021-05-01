@@ -53,7 +53,7 @@ class App extends Component {
     }})
   }
 
-  calculateFaceLocation = (data) => {
+  calculateFaceLocations = (data) => {
     const image = document.getElementById('inputimage');
     const width = Number(image.width);
     const height = Number(image.height);
@@ -104,7 +104,7 @@ class App extends Component {
             .catch(console.log)
 
         }
-        this.displayFaceBox(this.calculateFaceLocation(response))
+        this.displayFaceBox(this.calculateFaceLocations(response))
       })
       .catch(err => console.log(err));
   }
