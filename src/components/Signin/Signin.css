@@ -1,0 +1,8 @@
+.hover-black{
+    transition:background-color .3s;
+    backface-visibility: hidden;
+}
+
+.hover-black:hover{
+    background-color: black!important;
+}
