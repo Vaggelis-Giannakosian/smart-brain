@@ -100,6 +100,11 @@ class App extends Component {
     }
 
     calculateFaceLocations = (data) => {
+
+        if(!data || !data.outputs){
+            return [];
+        }
+
         const image = document.getElementById('inputimage');
         const width = Number(image.width);
         const height = Number(image.height);
@@ -125,10 +130,11 @@ class App extends Component {
     }
 
     onButtonSubmit = () => {
+        const token = window.sessionStorage.getItem('token')
         this.setState({imageUrl: this.state.input});
         fetch('http://localhost:3000/imageurl', {
             method: 'post',
-            headers: {'Content-Type': 'application/json'},
+            headers: {'Content-Type': 'application/json','Authorization':token},
             body: JSON.stringify({
                 input: this.state.input
             })
@@ -138,7 +144,7 @@ class App extends Component {
                 if (response) {
                     fetch('http://localhost:3000/image', {
                         method: 'put',
-                        headers: {'Content-Type': 'application/json'},
+                        headers: {'Content-Type': 'application/json','Authorization':token},
                         body: JSON.stringify({
                             id: this.state.user.id
                         })
