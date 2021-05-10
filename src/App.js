@@ -38,8 +38,8 @@ const initialState = {
         email: '',
         entries: 0,
         joined: '',
-        pet:'',
-        age:''
+        pet: '',
+        age: ''
     }
 }
 
@@ -47,6 +47,42 @@ class App extends Component {
     constructor() {
         super();
         this.state = initialState;
+    }
+
+    componentDidMount() {
+        const token = window.sessionStorage.getItem('token')
+
+        if (token) {
+            fetch('http://localhost:3000/signin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                }
+            })
+                .then(data => data.json())
+                .then(data => {
+                    if (data && data.id) {
+                        fetch(`http://localhost:3000/profile/${data.id}`,{
+                            method:'get',
+                            headers:{
+                                'Content-Type':"application/json",
+                                'Authorization':token
+                            }
+                        })
+                            .then(resp => resp.json())
+                            .then(user => {
+                                if(user && user.email){
+                                    this.loadUser(user)
+                                    this.onRouteChange('home');
+                                }
+                            })
+                            .catch(console.log)
+                    }
+                })
+                .catch(console.log)
+        }
+
     }
 
     loadUser = (data) => {
@@ -130,8 +166,8 @@ class App extends Component {
 
     toggleModal = () => {
         this.setState(prevState => ({
-          ...prevState,
-          isProfileOpen: !prevState.isProfileOpen
+            ...prevState,
+            isProfileOpen: !prevState.isProfileOpen
         }))
     }
 
